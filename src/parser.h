@@ -116,8 +116,11 @@ public:
         _asPointer = false;
         isPointer = false;
         isASM = false;
+Serial.printf("parse_create 9.1.1 f:%d / t:%d (l:%d) B [%d %d]\n", ESP.getFreeHeap(), ESP.getHeapSize(), ESP.getMaxAllocHeap(), esp_get_free_heap_size(), esp_get_free_internal_heap_size());
         parseProgram();
+Serial.printf("parse_create 9.1.2 f:%d / t:%d (l:%d) B [%d %d]\n", ESP.getFreeHeap(), ESP.getHeapSize(), ESP.getMaxAllocHeap(), esp_get_free_heap_size(), esp_get_free_internal_heap_size());
         buildParents(&program);
+Serial.printf("parse_create 9.1.3 f:%d / t:%d (l:%d) B [%d %d]\n", ESP.getFreeHeap(), ESP.getHeapSize(), ESP.getMaxAllocHeap(), esp_get_free_heap_size(), esp_get_free_internal_heap_size());
     }
 
     bool parse_create()
@@ -132,7 +135,9 @@ public:
         register_numr.push(15);
         // new
 
+Serial.printf("parse_create 9.1 f:%d / t:%d (l:%d) B [%d %d]\n", ESP.getFreeHeap(), ESP.getHeapSize(), ESP.getMaxAllocHeap(), esp_get_free_heap_size(), esp_get_free_internal_heap_size());
         parse();
+Serial.printf("parse_create 9.2 f:%d / t:%d (l:%d) B [%d %d]\n", ESP.getFreeHeap(), ESP.getHeapSize(), ESP.getMaxAllocHeap(), esp_get_free_heap_size(), esp_get_free_internal_heap_size());
         if (Error.error)
         {
 
@@ -154,11 +159,13 @@ public:
             program.visitNode(&program);
 
             pushToConsole("***********COMPILING DONE*********");
+Serial.printf("parse_create 9.3 f:%d / t:%d (l:%d) B [%d %d]\n", ESP.getFreeHeap(), ESP.getHeapSize(), ESP.getMaxAllocHeap(), esp_get_free_heap_size(), esp_get_free_internal_heap_size());
             // p.cleanint();
               printf("compile done %u\r\n",esp_get_free_heap_size());
             clean();
              printf("afer clean done %u\r\n",esp_get_free_heap_size());
             pushToConsole("***********AFTER CLEAN*********");
+Serial.printf("parse_create 9.4 f:%d / t:%d (l:%d) B [%d %d]\n", ESP.getFreeHeap(), ESP.getHeapSize(), ESP.getMaxAllocHeap(), esp_get_free_heap_size(), esp_get_free_internal_heap_size());
             //printf("%d\n",_content.size());
             int s = _header.size();
             for (int i = 0; i < s; i++)
@@ -171,6 +178,7 @@ public:
 #ifndef __TEST_DEBUG
             pushToConsole("***********CREATE EXECUTABLE*********");
             executecmd = createExectutable(&_content, __parser_debug);
+Serial.printf("parse_create 9.5 f:%d / t:%d (l:%d) B [%d %d]\n", ESP.getFreeHeap(), ESP.getHeapSize(), ESP.getMaxAllocHeap(), esp_get_free_heap_size(), esp_get_free_internal_heap_size());
             // strcompile = "";
             clean2();
             if (executecmd.error.error == 0)
@@ -190,6 +198,7 @@ public:
             return false;
 #endif
         }
+Serial.printf("parse_create 9.999 f:%d / t:%d (l:%d) B [%d %d]\n", ESP.getFreeHeap(), ESP.getHeapSize(), ESP.getMaxAllocHeap(), esp_get_free_heap_size(), esp_get_free_internal_heap_size());
     }
     bool parse_c(list<string> *_script)
     {
@@ -243,37 +252,47 @@ public:
         clean2();
         // printf("start with %u\r\n",esp_get_free_heap_size());
        __startmem=esp_get_free_heap_size();
+Serial.printf("parse_c 1 f:%d / t:%d (l:%d) B [%d %d]\n", ESP.getFreeHeap(), ESP.getHeapSize(), ESP.getMaxAllocHeap(), esp_get_free_heap_size(), esp_get_free_internal_heap_size());
        __maxMemUsage=0;
         Script sc(&division);
 
         _tks.init();
+Serial.printf("parse_c 2 f:%d / t:%d (l:%d) B [%d %d]\n", ESP.getFreeHeap(), ESP.getHeapSize(), ESP.getMaxAllocHeap(), esp_get_free_heap_size(), esp_get_free_internal_heap_size());
         tokenizer(&sc);
         list_of_token.pop_back();
+Serial.printf("parse_c 3 f:%d / t:%d (l:%d) B [%d %d]\n", ESP.getFreeHeap(), ESP.getHeapSize(), ESP.getMaxAllocHeap(), esp_get_free_heap_size(), esp_get_free_internal_heap_size());
 
         _token_line = 1;
 
         // string g=s+'\0';
         Script sc2(_script);
+Serial.printf("parse_c 4 f:%d / t:%d (l:%d) B [%d %d]\n", ESP.getFreeHeap(), ESP.getHeapSize(), ESP.getMaxAllocHeap(), esp_get_free_heap_size(), esp_get_free_internal_heap_size());
         _tks.init();
+Serial.printf("parse_c 5 f:%d / t:%d (l:%d) B [%d %d]\n", ESP.getFreeHeap(), ESP.getHeapSize(), ESP.getMaxAllocHeap(), esp_get_free_heap_size(), esp_get_free_internal_heap_size());
         tokenizer(&sc2, false, true);
+Serial.printf("parse_c 6 f:%d / t:%d (l:%d) B [%d %d]\n", ESP.getFreeHeap(), ESP.getHeapSize(), ESP.getMaxAllocHeap(), esp_get_free_heap_size(), esp_get_free_internal_heap_size());
         _token_line++;
 
         _index_token = list_of_token.begin();
+Serial.printf("parse_c 7 f:%d / t:%d (l:%d) B [%d %d]\n", ESP.getFreeHeap(), ESP.getHeapSize(), ESP.getMaxAllocHeap(), esp_get_free_heap_size(), esp_get_free_internal_heap_size());
         for (int i : add_on)
         {
 
             Script sc(_stdlib[i]);
             _tks.init();
             tokenizer(&sc, false, false);
+Serial.printf("parse_c 7.1 f:%d / t:%d (l:%d) B [%d %d]\n", ESP.getFreeHeap(), ESP.getHeapSize(), ESP.getMaxAllocHeap(), esp_get_free_heap_size(), esp_get_free_internal_heap_size());
         }
         // LedOS.script.clear();
         token t;
         t.type = TokenEndOfFile;
         //free(_script);
         list_of_token.push_back(t);
+Serial.printf("parse_c 8 f:%d / t:%d (l:%d) B [%d %d]\n", ESP.getFreeHeap(), ESP.getHeapSize(), ESP.getMaxAllocHeap(), esp_get_free_heap_size(), esp_get_free_internal_heap_size());
                 // printf("nb token:%d\r\n",list_of_token.size());
          //printf("after Token  %u %d\r\n",esp_get_free_heap_size(),esp_get_free_heap_size()/list_of_token.size());
        upadteMem();
+Serial.printf("parse_c 9 f:%d / t:%d (l:%d) B [%d %d]\n", ESP.getFreeHeap(), ESP.getHeapSize(), ESP.getMaxAllocHeap(), esp_get_free_heap_size(), esp_get_free_internal_heap_size());
         return parse_create();
     }
     void clean()
