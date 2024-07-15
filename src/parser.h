@@ -774,6 +774,7 @@ Serial.printf("parse_c 9 f:%d / t:%d (l:%d) B [%d %d]\n", ESP.getFreeHeap(), ESP
                         current_node = current_node->addChild(NodeBinOperator());
                         current_node->addChild(d);
             */
+            Serial.printf("parseExpr f:%d / t:%d (l:%d) B [%d %d]\n", ESP.getFreeHeap(), ESP.getHeapSize(), ESP.getMaxAllocHeap(), esp_get_free_heap_size(), esp_get_free_internal_heap_size());
             _node_token_stack.push_back(current_node->children.back());
             // NodeToken d = current_node->children.back();
             current_node->children.pop_back();
