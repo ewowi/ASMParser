@@ -535,7 +535,7 @@ typedef struct
 
 
     uint8_t line;
-        string text;
+        string textS;
 
     // switch to uin8_t unn ligne ne fera pas plus de 256 caracteres
     // uint8_t pos;
@@ -549,7 +549,7 @@ typedef struct
 
 void displaytoken(token t)
 {
-    // printf("%s\t%d\t%f\t%s%d %d\t%s\n", tokenNames[t.type].c_str(), t.int_value, t.float_value, t.text.c_str(), t.line, //t.pos, keywordTypeNames[t._keyword].c_str());
+    // printf("%s\t%d\t%f\t%s%d %d\t%s\n", tokenNames[t.type].c_str(), t.int_value, t.float_value, t.textS.c_str(), t.line, //t.pos, keywordTypeNames[t._keyword].c_str());
 }
 token transNumber(string str)
 {
@@ -586,7 +586,7 @@ token transNumber(string str)
         // t.float_value = f;
         t.type = TokenNumber;
         t._vartype = &_varTypes[(int)__float__];
-        t.text = str;
+        t.textS = str;
         return t;
     }
     // on traite un integer
@@ -599,7 +599,7 @@ token transNumber(string str)
     // t.uint_value = res;
     t.type = TokenNumber;
     t._vartype = &_varTypes[(int)__uint16_t__];
-    t.text = str;
+    t.textS = str;
 
     return t;
 }
@@ -921,6 +921,7 @@ void tokenizer(Script *script, bool update, bool increae_line)
     while (script->nextChar() != EOF_TEXT)
     {
 
+
         pos++;
         char c = script->currentChar();
         // printf("line : %d pos:%d char:%c token size:%d %d\n",line,pos,c,list_of_token.size(),heap_caps_get_free_size(MALLOC_CAP_8BIT));
@@ -933,7 +934,7 @@ void tokenizer(Script *script, bool update, bool increae_line)
                 t._vartype = NULL;
                 t.type = TokenDoubleEqual;
                 if (_for_display)
-                    t.text = "==";
+                    t.textS = "==";
                 t.line = _token_line;
                 // t.pos = pos;
                 list_of_token.insert(_index_token, t);
@@ -949,7 +950,7 @@ void tokenizer(Script *script, bool update, bool increae_line)
                 t.line = _token_line;
                 // t.pos = pos;
                 if (_for_display)
-                    t.text = "=";
+                    t.textS = "=";
                 list_of_token.insert(_index_token, t);
                 continue;
             }
@@ -963,7 +964,7 @@ void tokenizer(Script *script, bool update, bool increae_line)
                 t._vartype = NULL;
                 t.type = TokenLessOrEqualThan;
                 if (_for_display)
-                    t.text = "<=";
+                    t.textS = "<=";
                 t.line = _token_line;
                 // t.pos = pos;
                 list_of_token.insert(_index_token, t);
@@ -975,7 +976,7 @@ void tokenizer(Script *script, bool update, bool increae_line)
                 t._vartype = NULL;
                 t.type = TokenShiftLeft;
                 if (_for_display)
-                    t.text = "<<";
+                    t.textS = "<<";
                 t.line = _token_line;
                 // t.pos = pos;
                 list_of_token.insert(_index_token, t);
@@ -990,7 +991,7 @@ void tokenizer(Script *script, bool update, bool increae_line)
                 t.line = _token_line;
                 // t.pos = pos;
                 if (_for_display)
-                    t.text = "<";
+                    t.textS = "<";
                 list_of_token.insert(_index_token, t);
                 continue;
             }
@@ -1004,7 +1005,7 @@ void tokenizer(Script *script, bool update, bool increae_line)
                 t._vartype = NULL;
                 t.type = TokenMoreOrEqualThan;
                 if (_for_display)
-                    t.text = ">=";
+                    t.textS = ">=";
                 t.line = _token_line;
                 // t.pos = pos;
                 list_of_token.insert(_index_token, t);
@@ -1016,7 +1017,7 @@ void tokenizer(Script *script, bool update, bool increae_line)
                 t._vartype = NULL;
                 t.type = TokenShiftRight;
                 if (_for_display)
-                    t.text = ">>";
+                    t.textS = ">>";
                 t.line = _token_line;
                 // t.pos = pos;
                 list_of_token.insert(_index_token, t);
@@ -1031,7 +1032,7 @@ void tokenizer(Script *script, bool update, bool increae_line)
                 t.line = _token_line;
                 // t.pos = pos;
                 if (_for_display)
-                    t.text = ">";
+                    t.textS = ">";
                 list_of_token.insert(_index_token, t);
                 continue;
             }
@@ -1045,7 +1046,7 @@ void tokenizer(Script *script, bool update, bool increae_line)
                 t._vartype = NULL;
                 t.type = TokenNotEqual;
                 if (_for_display)
-                    t.text = "!=";
+                    t.textS = "!=";
                 t.line = _token_line;
                 // t.pos = pos;
                 list_of_token.insert(_index_token, t);
@@ -1060,7 +1061,7 @@ void tokenizer(Script *script, bool update, bool increae_line)
                 t.line = _token_line;
                 // t.pos = pos;
                 if (_for_display)
-                    t.text = "!";
+                    t.textS = "!";
                 list_of_token.insert(_index_token, t);
                 continue;
             }
@@ -1074,7 +1075,7 @@ void tokenizer(Script *script, bool update, bool increae_line)
                 t._vartype = NULL;
                 t.type = TokenPlusPlus;
                 if (_for_display)
-                    t.text = "++";
+                    t.textS = "++";
                 t.line = _token_line;
                 // t.pos = pos;
                 list_of_token.insert(_index_token, t);
@@ -1087,7 +1088,7 @@ void tokenizer(Script *script, bool update, bool increae_line)
                 t._vartype = NULL;
                 t.type = TokenAddition;
                 if (_for_display)
-                    t.text = "+";
+                    t.textS = "+";
                 t.line = _token_line;
                 // t.pos = pos;
                 list_of_token.insert(_index_token, t);
@@ -1180,7 +1181,7 @@ void tokenizer(Script *script, bool update, bool increae_line)
 
             }
             pos = newpos - 1;
-                t.text = v;
+                t.textS = v;
                 list_of_token.insert(_index_token, t);
             continue;
         }
@@ -1211,7 +1212,7 @@ void tokenizer(Script *script, bool update, bool increae_line)
             t.type = TokenSemicolon;
             t._vartype = NULL;
             if (_for_display)
-                t.text = ";";
+                t.textS = ";";
             t.line = _token_line;
             // t.pos = pos;
             list_of_token.insert(_index_token, t);
@@ -1223,7 +1224,7 @@ void tokenizer(Script *script, bool update, bool increae_line)
             t.type = TokenSpace;
             t._vartype = NULL;
             if (_for_display)
-                t.text = "\t";
+                t.textS = "\t";
             t.line = _token_line;
             // t.pos = pos;
             if (_for_display)
@@ -1236,7 +1237,7 @@ void tokenizer(Script *script, bool update, bool increae_line)
             t.type = TokenUppersand;
             t._vartype = NULL;
             if (_for_display)
-                t.text = "&";
+                t.textS = "&";
             t.line = _token_line;
             // t.pos = pos;
             list_of_token.insert(_index_token, t);
@@ -1248,7 +1249,7 @@ void tokenizer(Script *script, bool update, bool increae_line)
             t.type = TokenDiese;
             t._vartype = NULL;
             if (_for_display)
-                t.text = "#";
+                t.textS = "#";
             t.line = _token_line;
             // t.pos = pos;
             list_of_token.insert(_index_token, t);
@@ -1260,7 +1261,7 @@ void tokenizer(Script *script, bool update, bool increae_line)
             t.type = TokenOpenParenthesis;
             t._vartype = NULL;
             if (_for_display)
-                t.text = "(";
+                t.textS = "(";
             t.line = _token_line;
             // t.pos = pos;
             list_of_token.insert(_index_token, t);
@@ -1272,7 +1273,7 @@ void tokenizer(Script *script, bool update, bool increae_line)
             t.type = TokenModulo;
             t._vartype = NULL;
             if (_for_display)
-                t.text = "%";
+                t.textS = "%";
             t.line = _token_line;
             // t.pos = pos;
             list_of_token.insert(_index_token, t);
@@ -1284,7 +1285,7 @@ void tokenizer(Script *script, bool update, bool increae_line)
             t.type = TokenCloseParenthesis;
             t._vartype = NULL;
             if (_for_display)
-                t.text = ")";
+                t.textS = ")";
             t.line = _token_line;
             // t.pos = pos;
             list_of_token.insert(_index_token, t);
@@ -1296,7 +1297,7 @@ void tokenizer(Script *script, bool update, bool increae_line)
             t.type = TokenOpenCurlyBracket;
             t._vartype = NULL;
             if (_for_display)
-                t.text = "{";
+                t.textS = "{";
             t.line = _token_line;
             // t.pos = pos;
             list_of_token.insert(_index_token, t);
@@ -1308,7 +1309,7 @@ void tokenizer(Script *script, bool update, bool increae_line)
             t.type = TokenCloseCurlyBracket;
             t._vartype = NULL;
             if (_for_display)
-                t.text = "}";
+                t.textS = "}";
             t.line = _token_line;
             // t.pos = pos;
             list_of_token.insert(_index_token, t);
@@ -1320,7 +1321,7 @@ void tokenizer(Script *script, bool update, bool increae_line)
             t.type = TokenOpenBracket;
             t._vartype = NULL;
             if (_for_display)
-                t.text = "[";
+                t.textS = "[";
             t.line = _token_line;
             // t.pos = pos;
             list_of_token.insert(_index_token, t);
@@ -1332,7 +1333,7 @@ void tokenizer(Script *script, bool update, bool increae_line)
             t.type = TokenCloseBracket;
             t._vartype = NULL;
             if (_for_display)
-                t.text = "]";
+                t.textS = "]";
             t.line = _token_line;
             // t.pos = pos;
             list_of_token.insert(_index_token, t);
@@ -1347,11 +1348,11 @@ void tokenizer(Script *script, bool update, bool increae_line)
                 t._vartype = NULL;
                 t.type = TokenLineComment;
                 if (_for_display)
-                    t.text = "//";
+                    t.textS = "//";
                 c2 = script->nextChar();
                 while (c2 != '\n' and c2 != EOF_TEXT)
                 {
-                    t.text = t.text + c2;
+                    t.textS = t.textS + c2;
                     c2 = script->nextChar();
                 }
                 t.line = _token_line;
@@ -1368,13 +1369,13 @@ void tokenizer(Script *script, bool update, bool increae_line)
                 t._vartype = NULL;
                 t.type = TokenLineComment;
                 if (_for_display)
-                    t.text = "/*";
+                    t.textS = "/*";
                 c = script->nextChar();
                 c2 = script->nextChar();
                 while ((c != '*' or c2 != '/') and c2 != EOF_TEXT and c != EOF_TEXT) // stop when (c=* and c2=/) or c=0 or c2=0
                 {
                     if (_for_display)
-                        t.text = t.text + c;
+                        t.textS = t.textS + c;
                     c = c2;
                     c2 = script->nextChar();
                 }
@@ -1391,7 +1392,7 @@ void tokenizer(Script *script, bool update, bool increae_line)
                 t.type = TokenSlash;
                 t._vartype = NULL;
                 if (_for_display)
-                    t.text = "/";
+                    t.textS = "/";
                 t.line = _token_line;
                 // t.pos = pos;
                 list_of_token.insert(_index_token, t);
@@ -1404,7 +1405,7 @@ void tokenizer(Script *script, bool update, bool increae_line)
             t.type = TokenSubstraction;
             t._vartype = NULL;
             if (_for_display)
-                t.text = "-";
+                t.textS = "-";
             t.line = _token_line;
             // t.pos = pos;
             list_of_token.insert(_index_token, t);
@@ -1416,17 +1417,17 @@ void tokenizer(Script *script, bool update, bool increae_line)
             t.line = _token_line;
             // t.pos = pos;
             if (_for_display)
-                t.text = "";
+                t.textS = "";
             while (c == ' ')
             {
                 c = script->nextChar();
                 pos++;
-                t.text = t.text + " ";
+                t.textS = t.textS + " ";
             }
             script->previousChar(); // on revient un caractere en arriere
             pos--;
             t.type = TokenSpace;
-            // t.text = " ";
+            // t.textS = " ";
             if (_for_display)
                 list_of_token.insert(_index_token, t);
             continue;
@@ -1451,17 +1452,18 @@ void tokenizer(Script *script, bool update, bool increae_line)
             // pos--;
             v += c;
             t.type = TokenString;
-            t.text = v;
+            t.textS = v;
             list_of_token.insert(_index_token, t);
             continue;
         }
         if (c == '\n')
         {
-Serial.printf("%s:%d f:%d / t:%d (l:%d) B [%d %d]\n", __FUNCTION__, __LINE__, ESP.getFreeHeap(), ESP.getHeapSize(), ESP.getMaxAllocHeap(), esp_get_free_heap_size(), esp_get_free_internal_heap_size());
+Serial.printf("%s:%d f:%d / t:%d (l:%d) B [%d %d]", __FUNCTION__, __LINE__, ESP.getFreeHeap(), ESP.getHeapSize(), ESP.getMaxAllocHeap(), esp_get_free_heap_size(), esp_get_free_internal_heap_size());
+Serial.printf("   l:%d s:%d s:%d\n", list_of_token.size(), sizeof(token), sizeof(string));
             token t;
             t.type = TokenNewline;
             if (_for_display)
-                t.text = "\r\n";
+                t.textS = "\r\n";
             t.line = _token_line;
             // t.pos = pos;
             if (increae_line)
@@ -1476,7 +1478,7 @@ Serial.printf("%s:%d f:%d / t:%d (l:%d) B [%d %d]\n", __FUNCTION__, __LINE__, ES
             token t;
             t.type = TokenUnknown;
             if (_for_display)
-                t.text = "?";
+                t.textS = "?";
             t.line = _token_line;
             // t.pos = pos;
             //_token_line++;
@@ -1490,7 +1492,7 @@ Serial.printf("%s:%d f:%d / t:%d (l:%d) B [%d %d]\n", __FUNCTION__, __LINE__, ES
             token t;
             t.type = TokenMember;
             if (_for_display)
-                t.text = ".";
+                t.textS = ".";
             t.line = _token_line;
             // t.pos = pos;
             //_token_line++;
@@ -1504,7 +1506,7 @@ Serial.printf("%s:%d f:%d / t:%d (l:%d) B [%d %d]\n", __FUNCTION__, __LINE__, ES
             token t;
             t.type = TokenPower;
             if (_for_display)
-                t.text = "^";
+                t.textS = "^";
             t.line = _token_line;
             // t.pos = pos;
             //_token_line++;
@@ -1518,7 +1520,7 @@ Serial.printf("%s:%d f:%d / t:%d (l:%d) B [%d %d]\n", __FUNCTION__, __LINE__, ES
             token t;
             t.type = TokenUnknown;
             if (_for_display)
-                t.text = "\'";
+                t.textS = "\'";
             t.line = _token_line;
             // t.pos = pos;
             //  _token_line++;
@@ -1532,7 +1534,7 @@ Serial.printf("%s:%d f:%d / t:%d (l:%d) B [%d %d]\n", __FUNCTION__, __LINE__, ES
             token t;
             t.type = TokenUnknown;
             if (_for_display)
-                t.text = ":";
+                t.textS = ":";
             t.line = _token_line;
             // t.pos = pos;
             //_token_line++;
@@ -1547,7 +1549,7 @@ Serial.printf("%s:%d f:%d / t:%d (l:%d) B [%d %d]\n", __FUNCTION__, __LINE__, ES
             t._vartype = NULL;
             t.type = TokenStar;
             if (_for_display)
-                t.text = "*";
+                t.textS = "*";
             t.line = _token_line;
             // t.pos = pos;
             list_of_token.insert(_index_token, t);
@@ -1559,7 +1561,7 @@ Serial.printf("%s:%d f:%d / t:%d (l:%d) B [%d %d]\n", __FUNCTION__, __LINE__, ES
             t._vartype = NULL;
             t.type = TokenComma;
             if (_for_display)
-                t.text = ",";
+                t.textS = ",";
             t.line = _token_line;
             // t.pos = pos;
             list_of_token.insert(_index_token, t);
@@ -1569,7 +1571,7 @@ Serial.printf("%s:%d f:%d / t:%d (l:%d) B [%d %d]\n", __FUNCTION__, __LINE__, ES
     }
     token t;
     t.type = TokenEndOfFile;
-    t.text = "";
+    t.textS = "";
     t.line = _token_line;
     // t.pos = pos + 1;
     if (update)
@@ -1644,12 +1646,12 @@ string formatLine(string str)
     for (int i = 0; i < _tks.size(); i++)
     {
         token tk = *_tks.current();
-        //    Serial.printf("token %s\r\n",tk.text.c_str());
+        //    Serial.printf("token %s\r\n",tk.textS.c_str());
         /* if (tk.type == TokenOpenCurlyBracket)
          {
 
              // char *color= (char *)_colors[_curlybracket.size()%_NB_COLORS];
-             res = res + string_format("%s%s", _colors[_curlybracket.size() % _NB_COLORS], tk.text.c_str());
+             res = res + string_format("%s%s", _colors[_curlybracket.size() % _NB_COLORS], tk.textS.c_str());
              _curlybracket.push_back(_colors[_curlybracket.size() % _NB_COLORS]);
              _prevcurlybracket++;
          }
@@ -1658,20 +1660,20 @@ string formatLine(string str)
 
              if (_curlybracket.size() == 0)
              {
-                 res = res + string_format("%s%s", "\u001b[38;5;196m", tk.text.c_str());
+                 res = res + string_format("%s%s", "\u001b[38;5;196m", tk.textS.c_str());
              }
              else
              {
                  // char * color=_curlybracket.back();
                  _prevcurlybracket--;
-                 res = res + string_format("%s%s", _curlybracket.back(), tk.text.c_str());
+                 res = res + string_format("%s%s", _curlybracket.back(), tk.textS.c_str());
                  _curlybracket.pop_back();
              }
          }*/
         if (tk.type == TokenOpenParenthesis)
         {
             _prevparenthesis++;
-            res = res + string_format("%s%s", _colors[(_parenthesis.size() + 2) % _NB_COLORS], tk.text.c_str());
+            res = res + string_format("%s%s", _colors[(_parenthesis.size() + 2) % _NB_COLORS], tk.textS.c_str());
             _parenthesis.push_back(_colors[(_parenthesis.size() + 2) % _NB_COLORS]);
         }
         else if (tk.type == TokenCloseParenthesis)
@@ -1679,19 +1681,19 @@ string formatLine(string str)
 
             if (_parenthesis.size() == 0)
             {
-                res = res + string_format("%s%s", "\u001b[38;5;196m", tk.text.c_str());
+                res = res + string_format("%s%s", "\u001b[38;5;196m", tk.textS.c_str());
             }
             else
             {
                 _prevparenthesis--;
-                res = res + string_format("%s%s", _parenthesis.back(), tk.text.c_str());
+                res = res + string_format("%s%s", _parenthesis.back(), tk.textS.c_str());
                 _parenthesis.pop_back();
             }
         }
         else if (tk.type == TokenOpenBracket)
         {
             _prevbracket++;
-            res = res + string_format("%s%s", _colors[_bracket.size() % _NB_COLORS], tk.text.c_str());
+            res = res + string_format("%s%s", _colors[_bracket.size() % _NB_COLORS], tk.textS.c_str());
             _bracket.push_back(_colors[_bracket.size() % _NB_COLORS]);
         }
         else if (tk.type == TokenCloseBracket)
@@ -1699,31 +1701,31 @@ string formatLine(string str)
 
             if (_bracket.size() == 0)
             {
-                res = res + string_format("%s%s", "\u001b[38;5;196m", tk.text.c_str());
+                res = res + string_format("%s%s", "\u001b[38;5;196m", tk.textS.c_str());
             }
             else
             {
                 _prevbracket--;
-                res = res + string_format("%s%s", _bracket.back(), tk.text.c_str());
+                res = res + string_format("%s%s", _bracket.back(), tk.textS.c_str());
                 _bracket.pop_back();
             }
         }
         /*
         else if (tk.type == TokenKeyword)
         {
-            res = res + string_format("%s%s", KeywordTypeFormat[tk._keyword], tk.text.c_str());
+            res = res + string_format("%s%s", KeywordTypeFormat[tk._keyword], tk.textS.c_str());
         }*/
         else
         {
             token tkn = *_tks.next();
             if (tk.type == TokenIdentifier && tkn.type == TokenOpenParenthesis)
             {
-                res = res + string_format("%s%s", tokenFormat[TokenFunction], tk.text.c_str());
+                res = res + string_format("%s%s", tokenFormat[TokenFunction], tk.textS.c_str());
             }
             else
             {
 
-                res = res + string_format("%s%s", tokenFormat[tk.type], tk.text.c_str());
+                res = res + string_format("%s%s", tokenFormat[tk.type], tk.textS.c_str());
             }
             _tks.prev();
         }

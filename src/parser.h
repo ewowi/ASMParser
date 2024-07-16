@@ -366,7 +366,7 @@ Serial.printf("%s:%d f:%d / t:%d (l:%d) B [%d %d]\n", __FUNCTION__, __LINE__, ES
         // copyPrty(type._nd,&var);
         current_node->addChild(var);
         current_cntx->addVariable(var);
-        current_node->text=current_cntx->variables.back().text;
+        current_node->textS=current_cntx->variables.back().textS;
         // arg.addChild(nd);
         // next();
         // printf("current %s\n", tokenNames[current()->type].c_str());
@@ -391,7 +391,7 @@ Serial.printf("%s:%d f:%d / t:%d (l:%d) B [%d %d]\n", __FUNCTION__, __LINE__, ES
             // arg.addChild(var);
             current_node->addChild(var);
             current_cntx->addVariable(var);
-            current_node->text=current_cntx->variables.back().text;
+            current_node->textS=current_cntx->variables.back().textS;
             // next();
         }
         // prev();
@@ -411,7 +411,7 @@ Serial.printf("%s:%d f:%d / t:%d (l:%d) B [%d %d]\n", __FUNCTION__, __LINE__, ES
             // //printf("hhheeheh\n");
 
             Error.error = 1;
-            Error.error_message = string_format("impossible to find declaraiton for %s %s", current()->text.c_str(), linepos().c_str());
+            Error.error_message = string_format("impossible to find declaraiton for %s %s", current()->textS.c_str(), linepos().c_str());
             next();
             return;
         }
@@ -472,7 +472,7 @@ Serial.printf("%s:%d f:%d / t:%d (l:%d) B [%d %d]\n", __FUNCTION__, __LINE__, ES
                     {
 
                         Error.error = 1;
-                        Error.error_message = string_format("expecting ]  or , %s", current()->text.c_str());
+                        Error.error_message = string_format("expecting ]  or , %s", current()->textS.c_str());
                         next();
                         return;
                     }
@@ -481,7 +481,7 @@ Serial.printf("%s:%d f:%d / t:%d (l:%d) B [%d %d]\n", __FUNCTION__, __LINE__, ES
                 {
 
                     Error.error = 1;
-                    Error.error_message = string_format("expecting ]  or , %s", current()->text.c_str());
+                    Error.error_message = string_format("expecting ]  or , %s", current()->textS.c_str());
                     next();
                     return;
                 }
@@ -492,7 +492,7 @@ Serial.printf("%s:%d f:%d / t:%d (l:%d) B [%d %d]\n", __FUNCTION__, __LINE__, ES
             {
                 next();
                 // next();
-                current_node->target = current()->text;
+                current_node->targetS = current()->textS;
                 next();
             }
 
@@ -860,7 +860,7 @@ Serial.printf("%s:%d f:%d / t:%d (l:%d) B [%d %d]\n", __FUNCTION__, __LINE__, ES
 
     void parseFunctionCall()
     {
-        // Serial.printf("serial %s\r\n",current()->text.c_str());
+        // Serial.printf("serial %s\r\n",current()->textS.c_str());
         // int sav_nb_arg;
         // NodeToken *t = current_cntx->findFunction(current());
 
@@ -869,7 +869,7 @@ Serial.printf("%s:%d f:%d / t:%d (l:%d) B [%d %d]\n", __FUNCTION__, __LINE__, ES
         if (search_result == NULL)
         {
             Error.error = 1;
-            Error.error_message = string_format("function %s not found %s", current()->text.c_str(), linepos().c_str());
+            Error.error_message = string_format("function %s not found %s", current()->textS.c_str(), linepos().c_str());
             return;
         }
         next();
@@ -914,7 +914,7 @@ Serial.printf("%s:%d f:%d / t:%d (l:%d) B [%d %d]\n", __FUNCTION__, __LINE__, ES
         return;
     }
 
-    void parseComparaison(string target)
+    void parseComparaison(string targetS)
     {
         // resParse res;
         Error.error = 0;
@@ -937,8 +937,8 @@ Serial.printf("%s:%d f:%d / t:%d (l:%d) B [%d %d]\n", __FUNCTION__, __LINE__, ES
         }
         next();
 
-        current_node->target = target;
-        // cn.target=target;
+        current_node->targetS = targetS;
+        // cn.targetS=targetS;
         // cn.addChild(left._nd);
         // cn.addChild(right._nd);
 
@@ -1160,18 +1160,18 @@ Serial.printf("%s:%d f:%d / t:%d (l:%d) B [%d %d]\n", __FUNCTION__, __LINE__, ES
             // on tente le for(){}
             // token *fort = current();
             // Context cntx;
-            // cntx.name = current()->text;
-            // //printf("entering f %d %s %s %x\n", current_cntx->_global->children.size(), current_cntx->_global->name.c_str(), current()->text.c_str(), (uint64_t)current_cntx->_global);
+            // cntx.name = current()->textS;
+            // //printf("entering f %d %s %s %x\n", current_cntx->_global->children.size(), current_cntx->_global->name.c_str(), current()->textS.c_str(), (uint64_t)current_cntx->_global);
             // current_cntx = (*(current_cntx)).addChild(cntx);
-            current_cntx = current_cntx->addChild(Context(current()->text));
+            current_cntx = current_cntx->addChild(Context(current()->textS));
             // current_cntx = k;
-            //  string target =string_format("label_%d%s",for_if_num,k->name.c_str());
+            //  string targetS =string_format("label_%d%s",for_if_num,k->name.c_str());
             targetList.push(string_format("label_%d%s", for_if_num, current_cntx->name.c_str()));
-            //=target;
+            //=targetS;
             for_if_num++;
 
             // NodeElse ndf = NodeElse(fort);
-            // ndf.target = targetList.pop();
+            // ndf.targetS = targetList.pop();
             // current_node = current_node->addChild(ndf);
             current_node = current_node->addChild(NodeElse(current(), targetList.pop()));
             next();
@@ -1182,7 +1182,7 @@ Serial.printf("%s:%d f:%d / t:%d (l:%d) B [%d %d]\n", __FUNCTION__, __LINE__, ES
                 return;
             }
 
-            // current_node->target=target;
+            // current_node->targetS=targetS;
 
             // resParse result;
 
@@ -1199,19 +1199,19 @@ Serial.printf("%s:%d f:%d / t:%d (l:%d) B [%d %d]\n", __FUNCTION__, __LINE__, ES
             // on tente le for(){}
             sav_t.push_back(current());
             // Context cntx;
-            // cntx.name = current()->text;
-            //  //printf("entering f %d %s %s %x\n", current_cntx->_global->children.size(), current_cntx->_global->name.c_str(), current()->text.c_str(), (uint64_t)current_cntx->_global);
+            // cntx.name = current()->textS;
+            //  //printf("entering f %d %s %s %x\n", current_cntx->_global->children.size(), current_cntx->_global->name.c_str(), current()->textS.c_str(), (uint64_t)current_cntx->_global);
             // Context *k = (*(current_cntx)).addChild(cntx);
             // current_cntx = (*(current_cntx)).addChild(cntx);;
-            current_cntx = current_cntx->addChild(Context(current()->text));
+            current_cntx = current_cntx->addChild(Context(current()->textS));
             targetList.push(string_format("label_%d%s", for_if_num, current_cntx->name.c_str()));
-            //=target;
+            //=targetS;
             for_if_num++;
             next();
             if (Match(TokenOpenParenthesis))
             {
                 // NodeWhile ndf = NodeWhile(fort);
-                // ndf.target = target;
+                // ndf.targetS = targetS;
                 // current_node = current_node->addChild(ndf);
                 current_node = current_node->addChild(NodeWhile(sav_t.back(), targetList.get()));
                 next();
@@ -1223,7 +1223,7 @@ Serial.printf("%s:%d f:%d / t:%d (l:%d) B [%d %d]\n", __FUNCTION__, __LINE__, ES
                     return;
                 }
                 targetList.pop();
-                ////printf("on a parse %s\n",comparator._nd._token->text.c_str());
+                ////printf("on a parse %s\n",comparator._nd._token->textS.c_str());
                 // printf(" *************** on parse inc/n");
 
                 parseBlockStatement();
@@ -1232,7 +1232,7 @@ Serial.printf("%s:%d f:%d / t:%d (l:%d) B [%d %d]\n", __FUNCTION__, __LINE__, ES
                     return;
                 }
 
-                // current_node->target=target;
+                // current_node->targetS=targetS;
 
                 // resParse result;
 
@@ -1259,19 +1259,19 @@ Serial.printf("%s:%d f:%d / t:%d (l:%d) B [%d %d]\n", __FUNCTION__, __LINE__, ES
             // on tente le for(){}
             // token *fort=current();
             // Context cntx;
-            // cntx.name = current()->text;
-            // //printf("entering f %d %s %s %x\n", current_cntx->_global->children.size(), current_cntx->_global->name.c_str(), current()->text.c_str(), (uint64_t)current_cntx->_global);
+            // cntx.name = current()->textS;
+            // //printf("entering f %d %s %s %x\n", current_cntx->_global->children.size(), current_cntx->_global->name.c_str(), current()->textS.c_str(), (uint64_t)current_cntx->_global);
             // Context *k = (*(current_cntx)).addChild(cntx);
-            current_cntx = current_cntx->addChild(Context(current()->text));
-            // string target =string_format("label_%d%s",for_if_num,k->name.c_str());
+            current_cntx = current_cntx->addChild(Context(current()->textS));
+            // string targetS =string_format("label_%d%s",for_if_num,k->name.c_str());
             targetList.push(string_format("label_%d%s", for_if_num, current_cntx->name.c_str()));
-            //=target;
+            //=targetS;
             for_if_num++;
             // next();
             if (Match(TokenOpenParenthesis, 1))
             {
                 // NodeIf ndf = NodeIf(current());
-                // ndf.target = targetList.get();
+                // ndf.targetS = targetList.get();
 
                 // current_node = current_node->addChild(ndf);
                 current_node = current_node->addChild(NodeIf(current(), targetList.get()));
@@ -1284,7 +1284,7 @@ Serial.printf("%s:%d f:%d / t:%d (l:%d) B [%d %d]\n", __FUNCTION__, __LINE__, ES
                 {
                     return;
                 }
-                ////printf("on a parse %s\n",comparator._nd._token->text.c_str());
+                ////printf("on a parse %s\n",comparator._nd._token->textS.c_str());
                 // printf(" *************** on parse inc/n");
 
                 parseBlockStatement();
@@ -1293,7 +1293,7 @@ Serial.printf("%s:%d f:%d / t:%d (l:%d) B [%d %d]\n", __FUNCTION__, __LINE__, ES
                     return;
                 }
 
-                // current_node->target=target;
+                // current_node->targetS=targetS;
 
                 // resParse result;
 
@@ -1319,20 +1319,20 @@ Serial.printf("%s:%d f:%d / t:%d (l:%d) B [%d %d]\n", __FUNCTION__, __LINE__, ES
             // on tente le for(){}
             // token *fort=current();
             // Context cntx;
-            // cntx.name = current()->text;
-            // //printf("entering f %d %s %s %x\n", current_cntx->_global->children.size(), current_cntx->_global->name.c_str(), current()->text.c_str(), (uint64_t)current_cntx->_global);
+            // cntx.name = current()->textS;
+            // //printf("entering f %d %s %s %x\n", current_cntx->_global->children.size(), current_cntx->_global->name.c_str(), current()->textS.c_str(), (uint64_t)current_cntx->_global);
             // current_cntx = current_cntx->addChild(cntx);
-            current_cntx = current_cntx->addChild(Context(current()->text));
+            current_cntx = current_cntx->addChild(Context(current()->textS));
             // current_cntx = k;
-            // string target =string_format("label_%d%s",for_if_num,current_cntx->name.c_str());
+            // string targetS =string_format("label_%d%s",for_if_num,current_cntx->name.c_str());
             targetList.push(string_format("label_%d%s", for_if_num, current_cntx->name.c_str()));
-            //=target;
+            //=targetS;
             for_if_num++;
             // next();
             if (Match(TokenOpenParenthesis, 1))
             {
                 // NodeFor ndf = NodeFor(current());
-                // ndf.target = targetList.get();
+                // ndf.targetS = targetList.get();
                 next();
                 // current_node = current_node->addChild(ndf);
                 current_node = current_node->addChild(NodeFor(current(), targetList.get()));
@@ -1356,7 +1356,7 @@ Serial.printf("%s:%d f:%d / t:%d (l:%d) B [%d %d]\n", __FUNCTION__, __LINE__, ES
                 {
                     return;
                 }
-                ////printf("on a parse %s\n",comparator._nd._token->text.c_str());
+                ////printf("on a parse %s\n",comparator._nd._token->textS.c_str());
                 // printf(" *************** on parse inc/n");
                             __current.push( current());
 
@@ -1376,7 +1376,7 @@ Serial.printf("%s:%d f:%d / t:%d (l:%d) B [%d %d]\n", __FUNCTION__, __LINE__, ES
                     return;
                 }
 
-                // current_node->target=target;
+                // current_node->targetS=targetS;
 
                 // resParse result;
 
@@ -1400,7 +1400,7 @@ Serial.printf("%s:%d f:%d / t:%d (l:%d) B [%d %d]\n", __FUNCTION__, __LINE__, ES
 
         else if (Match(TokenKeywordVarType))
         {
-            // printf("trying to create %s\n", current()->text.c_str());
+            // printf("trying to create %s\n", current()->textS.c_str());
             parseType();
             if (Error.error)
             {
@@ -1420,7 +1420,7 @@ Serial.printf("%s:%d f:%d / t:%d (l:%d) B [%d %d]\n", __FUNCTION__, __LINE__, ES
             // auto var = createNodeLocalVariableForCreation(&nd, &f);
             nodeTokenList.push(createNodeLocalVariableForCreation(nodeTokenList.pop(), nodeTokenList.pop()));
             // printf("111&&&&&&&dddddddddd&&&&qssdqsdqsd& %s\n", nodeTypeNames[var._nodetype].c_str());
-            // string var_name = nd._token->text;
+            // string var_name = nd._token->textS;
             // pritnf()
             current_cntx->addVariable(nodeTokenList.get());
             
@@ -1430,9 +1430,9 @@ Serial.printf("%s:%d f:%d / t:%d (l:%d) B [%d %d]\n", __FUNCTION__, __LINE__, ES
                 Error.error = 0;
                 // result._nd = var;
                 _uniquesave=current_node->addChild(nodeTokenList.pop());
-                current_cntx->variables.back().text;
+                current_cntx->variables.back().textS;
                 // current_node = current_node->parent;
-                _uniquesave->text=current_cntx->variables.back().text;
+                _uniquesave->textS=current_cntx->variables.back().textS;
                 next();
                 return;
             }
@@ -1448,7 +1448,7 @@ Serial.printf("%s:%d f:%d / t:%d (l:%d) B [%d %d]\n", __FUNCTION__, __LINE__, ES
                 // copyPrty(type._nd, &var);
                 // current_node->addChild(left);
               _uniquesave=  current_node->addChild(createNodeLocalVariableForStore(nodeTokenList.pop()));
-                 _uniquesave->text=current_cntx->variables.back().text;
+                 _uniquesave->textS=current_cntx->variables.back().textS;
                 parseExpr();
 
                 if (Error.error)
@@ -1486,7 +1486,7 @@ Serial.printf("%s:%d f:%d / t:%d (l:%d) B [%d %d]\n", __FUNCTION__, __LINE__, ES
         else
         {
             Error.error = 1;
-            Error.error_message = string_format(" Unexpected %s  %s", current()->text.c_str(), linepos().c_str());
+            Error.error_message = string_format(" Unexpected %s  %s", current()->textS.c_str(), linepos().c_str());
             return;
         }
     }
@@ -1539,7 +1539,7 @@ Serial.printf("%s:%d f:%d / t:%d (l:%d) B [%d %d]\n", __FUNCTION__, __LINE__, ES
         Error.error = 0;
         bool ext_function = false;
         bool is_asm = false;
-       // printf("entering function %s with %ur\n",current()->text.c_str(),esp_get_free_heap_size());
+       // printf("entering function %s with %ur\n",current()->textS.c_str(),esp_get_free_heap_size());
         if (isExternal)
         {
             ext_function = true;
@@ -1594,7 +1594,7 @@ Serial.printf("%s:%d f:%d / t:%d (l:%d) B [%d %d]\n", __FUNCTION__, __LINE__, ES
         }
         // on ajoute un nouveau contexte
         Context cntx;
-        cntx.name = current()->text;
+        cntx.name = current()->textS;
         Context *k = current_cntx->addChild(cntx);
         current_cntx = k;
         stack_size = _STACK_SIZE;
@@ -1663,9 +1663,9 @@ Serial.printf("%s:%d f:%d / t:%d (l:%d) B [%d %d]\n", __FUNCTION__, __LINE__, ES
                 current_cntx = current_cntx->parent;
 
                 point_regnum = 4;
-// printf("on visit la function %s %d\r\n",current_node->_token->text.c_str(),_tks.position);
+// printf("on visit la function %s %d\r\n",current_node->_token->textS.c_str(),_tks.position);
 #ifndef __MEM_PARSER
-              //  printf("on compile %s\r\n",current_node->text.c_str());
+              //  printf("on compile %s\r\n",current_node->textS.c_str());
                 __sav_pos = _tks.position;
                 buildParents(current_node);
                 
@@ -1713,14 +1713,14 @@ Serial.printf("%s:%d f:%d / t:%d (l:%d) B [%d %d]\n", __FUNCTION__, __LINE__, ES
             //_nd._token = current();
             _nd._tokenType=current()->type;
              _nd._vartype=current()->_vartype;
-             _nd.text=current()->text;
+             _nd.textS=current()->textS;
 
-            //printf("pqoidpoqsidpoqisdopiqsopdiqsd %s\r\n",current()->text.c_str());
-            varType *k=findStruct(current()->text);
+            //printf("pqoidpoqsidpoqisdopiqsopdiqsd %s\r\n",current()->textS.c_str());
+            varType *k=findStruct(current()->textS);
             if(k!=NULL)
             {
 
-                // printf("found %s\r\n",current()->text.c_str());
+                // printf("found %s\r\n",current()->textS.c_str());
                // _nd._token->_vartype=k;
                _nd._vartype=k;
 
@@ -1739,7 +1739,7 @@ Serial.printf("%s:%d f:%d / t:%d (l:%d) B [%d %d]\n", __FUNCTION__, __LINE__, ES
         else
         {
             Error.error = 1;
-            Error.error_message = string_format("expecting external, __ASM__  or variable type %s %d %s", linepos().c_str(),current()->type,current()->text.c_str());
+            Error.error_message = string_format("expecting external, __ASM__  or variable type %s %d %s", linepos().c_str(),current()->type,current()->textS.c_str());
             next();
             return;
         }
@@ -1755,7 +1755,7 @@ Serial.printf("%s:%d f:%d / t:%d (l:%d) B [%d %d]\n", __FUNCTION__, __LINE__, ES
         {
             // resParse res;
             Error.error = 1;
-            Error.error_message = string_format("variable %s already declared in the scope for %s", current()->text.c_str(), linepos().c_str());
+            Error.error_message = string_format("variable %s already declared in the scope for %s", current()->textS.c_str(), linepos().c_str());
             next();
             return;
         }
@@ -1776,7 +1776,7 @@ Serial.printf("%s:%d f:%d / t:%d (l:%d) B [%d %d]\n", __FUNCTION__, __LINE__, ES
                     {
                         var.isPointer = true;
                         var._nodetype = defGlobalVariableNode; // we can't have arrays in the stack
-                        var._total_size = stringToInt(num->text);
+                        var._total_size = stringToInt(num->textS);
                         next();
                         // resParse result;
                         Error.error = 0;
@@ -1805,7 +1805,7 @@ Serial.printf("%s:%d f:%d / t:%d (l:%d) B [%d %d]\n", __FUNCTION__, __LINE__, ES
             {
                 var.isPointer = true;
                 var._nodetype = defGlobalVariableNode; // we can't have arrays in the stack
-                                                       // var._total_size = stringToInt(num->text);
+                                                       // var._total_size = stringToInt(num->textS);
                 next();
                 // resParse result;
                 Error.error = 0;
@@ -1865,7 +1865,7 @@ Serial.printf("%s:%d f:%d / t:%d (l:%d) B [%d %d]\n", __FUNCTION__, __LINE__, ES
                      _start = 0;
                      _pos = 0;
                      _totalsize = 0;
-                    usded.varName = current()->text;
+                    usded.varName = current()->textS;
                     
                     next(); //{
 
@@ -1888,8 +1888,8 @@ Serial.printf("%s:%d f:%d / t:%d (l:%d) B [%d %d]\n", __FUNCTION__, __LINE__, ES
                         }
                         next(); // name
                        
-                        usded.membersNames[memberpos] = current()->text;
-                       // printf(" addinr %s.%s\r\n",usded.varName.c_str(),current()->text.c_str());
+                        usded.membersNames[memberpos] = current()->textS;
+                       // printf(" addinr %s.%s\r\n",usded.varName.c_str(),current()->textS.c_str());
                         next(); // ;
 
                         next();
@@ -1940,11 +1940,11 @@ Serial.printf("%s:%d f:%d / t:%d (l:%d) B [%d %d]\n", __FUNCTION__, __LINE__, ES
                     }
                     else
                     {
-                        if (findLibFunction(sav_t.back()->text) > -1)
+                        if (findLibFunction(sav_t.back()->textS) > -1)
                         {
                             Error.error = 0;
-                            // current_node->addChild(NodeImport(sav_t.back(),findLibFunction(sav_t.back()->text)));
-                            // add_on.push_back(findLibFunction(sav_t.back()->text));
+                            // current_node->addChild(NodeImport(sav_t.back(),findLibFunction(sav_t.back()->textS)));
+                            // add_on.push_back(findLibFunction(sav_t.back()->textS));
                             sav_t.pop_back();
                             // next();
                         }
@@ -2008,7 +2008,7 @@ Serial.printf("%s:%d f:%d / t:%d (l:%d) B [%d %d]\n", __FUNCTION__, __LINE__, ES
                             copyPrty(&t, &var);
                            current_node = program.addChild(var);
                             current_cntx->addVariable(var);
-                            current_node->text=current_cntx->variables.back().text;
+                            current_node->textS=current_cntx->variables.back().textS;
                             isExternal = false;
                         }
                         else
@@ -2018,7 +2018,7 @@ Serial.printf("%s:%d f:%d / t:%d (l:%d) B [%d %d]\n", __FUNCTION__, __LINE__, ES
                             copyPrty(&t, &var);
                             current_node = program.addChild(var);
                             current_cntx->addVariable(var);
-                            current_node->text=current_cntx->variables.back().text;
+                            current_node->textS=current_cntx->variables.back().textS;
                         }
                         if (Match(TokenSemicolon))
                         {
