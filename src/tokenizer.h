@@ -1457,6 +1457,7 @@ void tokenizer(Script *script, bool update, bool increae_line)
         }
         if (c == '\n')
         {
+Serial.printf("%s:%d f:%d / t:%d (l:%d) B [%d %d]\n", __FUNCTION__, __LINE__, ESP.getFreeHeap(), ESP.getHeapSize(), ESP.getMaxAllocHeap(), esp_get_free_heap_size(), esp_get_free_internal_heap_size());
             token t;
             t.type = TokenNewline;
             if (_for_display)
